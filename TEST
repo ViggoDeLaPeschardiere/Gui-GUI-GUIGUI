@@ -1,0 +1,41 @@
+#include <stdio.h>
+// Trier les opérations en fonction du degré d'exclusion (tri décroissant)
+    for (int i = 0; i < operationCount - 1; ++i) {
+        for (int j = i + 1; j < operationCount; ++j) {
+            if (operationDegrees[j].degree > operationDegrees[i].degree ||
+                (operationDegrees[j].degree == operationDegrees[i].degree && operationDegrees[j].operation < operationDegrees[i].operation)) {
+                // Échanger les positions des opérations
+                OperationDegree temp = operationDegrees[i];
+                operationDegrees[i] = operationDegrees[j];
+                operationDegrees[j] = temp;
+            }
+        }
+    }
+int main() {
+    ExclusionConstraint exclusions[MAX_OPERATIONS];
+    int constraintCount = 0;
+
+    // Lire les contraintes d'exclusion depuis le fichier
+    readExclusionConstraints(exclusions, &constraintCount);
+
+    // Nombre total d'opérations (à remplacer par la lecture du fichier operations.txt)
+    FILE *operationsFile = fopen("operations.txt", "r");
+    if (operationsFile == NULL) {
+        printf("Erreur lors de l'ouverture du fichier operations.txt\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int operationCount = 0;
+    while (fscanf(operationsFile, "%*d %*f") == 0) {
+        operationCount++;
+    }
+
+
+
+    fclose(operationsFile);
+
+    // Appeler la fonction pour répartir les opérations par station
+    distributeOperations(exclusions, constraintCount, operationCount);
+
+    return 0;
+}
